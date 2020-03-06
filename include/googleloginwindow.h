@@ -2,6 +2,8 @@
 #define LOGINWINDOW_H
 
 #include <QDialog>
+#include <QWebEnginePage>
+#include <QWebEngineCertificateError>
 
 class QStackedLayout;
 class QNetworkCookie;
@@ -50,6 +52,16 @@ public slots:
     void showWebBrowser() { window->showWebBrowser(); }
     void setAccountIdentifier(const QString& identifier) { window->setAccountIdentifier(identifier); }
 
+};
+
+class WebPage : public QWebEnginePage {
+    Q_OBJECT
+public:
+    explicit WebPage(QWidget * wid) : QWebEnginePage(wid) {}
+protected:
+    bool certificateError(const QWebEngineCertificateError& err) {
+        return err.isOverridable();
+    }
 };
 
 #endif // LOGINWINDOW_H
